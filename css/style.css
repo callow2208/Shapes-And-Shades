@@ -25,12 +25,25 @@
     box-sizing: border-box;
 }
 
-body {
+/* body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
-    background-color: var(--white);
+    background-color: var(--white); HIDE THIS LINE WHEN UNCOMMENTING
     color: var(--black);
     line-height: 1.6;
     overflow-x: hidden;
+    background-color: #f9f9f9; Clean light neutral tone
+} */
+
+section.portfolio-grid {
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.03);
+}
+
+section.portfolio-grid {
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.03);
 }
 
 /* ============================================
@@ -129,6 +142,10 @@ p {
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, var(--black) 0%, var(--gray-dark) 100%);
+    background-image: url("../img/India Bulls Tower/PHOTO-2022-06-21-15-54-29.JPG") !important;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     overflow: hidden;
     transition: opacity 0.4s ease-out;
     will-change: opacity;
@@ -181,6 +198,7 @@ p {
     margin-bottom: 1.5rem;
     opacity: 0;
     animation: fadeInUp 1s ease forwards;
+    padding-top: 10rem;
 }
 
 .hero-subtitle {
@@ -355,9 +373,352 @@ section {
     margin-right: auto;
 }
 
+
+
+/* Smooth Image Scroller */
+.gallery-wrapper {
+  position: relative;
+  width: 100%;
+  margin: 10px 0 0 0;
+  overflow: hidden;
+}
+
+.gallery-wrapper:hover .gallery-arrow {
+  opacity: 1;
+}
+
+.gallery-arrow {
+  opacity: 0.6;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  transition: opacity 0.3s ease;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery-arrow.left {
+  left: 10px;
+}
+
+.gallery-arrow.right {
+  right: 10px;
+}
+
+.image-scroll-container {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 10px 60px; /* Space for arrows */
+  scrollbar-width: none; /* Firefox */
+  scroll-snap-type: x mandatory; /* Key: Snap to cards smoothly */
+  will-change: scroll-position; /* Optimize perf */
+}
+
+.image-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.image-card {
+  min-width: 320px;
+  height: 240px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  cursor: pointer;
+  scroll-snap-align: start; /* Key: Snap point */
+  transform: translateZ(0); /* GPU acceleration */
+}
+
+.image-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.image-card:hover img {
+  transform: scale(1.05);
+}
+
+.gallery-grid {
+  column-count: 3; /* Base: 3 cols */
+  column-gap: 1rem;
+  padding: 1rem 0;
+}
+
+.gallery-grid img {
+  width: 100%;
+  margin-bottom: 1rem;
+  display: block;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  break-inside: avoid; /* Prevent image split across columns */
+}
+
+.gallery-grid img:hover {
+  transform: scale(1.02);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .gallery-grid {
+    column-count: 2;
+  }
+  .image-card {
+    min-width: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-grid {
+    column-count: 1;
+  }
+  .image-card {
+    min-width: 100%;
+  }
+}
+
+
+/* Image Zoom Modal */
 /* ============================================
-   IMAGE PLACEHOLDERS
+   PERFECTLY CENTERED MODAL WITH BLUR/BLACK BG
    ============================================ */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.95); /* Full black overlay */
+  /* OPTION 1: For BLURRED BACKGROUND - uncomment below */
+  /* backdrop-filter: blur(8px); */
+  /* -webkit-backdrop-filter: blur(8px); */
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* PERFECT CENTER */
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+  border-radius: 12px;
+  animation: zoomIn 0.4s ease;
+}
+
+.modal-arrow {
+  position: fixed; /* Changed from absolute */
+  top: 50%;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1001;
+  transition: all 0.3s ease;
+  border: none;
+  color: white;
+  /* ... other styles ... */
+  background-color: rgba(0,0,0,0.4); /* Semi-transparent */
+  backdrop-filter: blur(8px);        /* BLUR MAGIC ✨ */
+  -webkit-backdrop-filter: blur(8px); /* Safari support */
+}
+
+.modal-arrow:hover {
+  background: rgba(0,0,0,0.9);
+  transform: translateY(-50%) scale(1.2);
+}
+
+.modal-arrow.prev {
+  left: calc(50% - 480px); /* Half of max-width + padding */
+}
+
+.modal-arrow.next {
+  right: calc(50% - 480px);
+}
+
+.close-modal {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  z-index: 1001;
+  cursor: pointer;
+  transition: 0.3s;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(10px);
+}
+
+.close-modal:hover {
+  color: #fff;
+  background: rgba(0,0,0,0.8);
+  transform: scale(1.1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes zoomIn {
+  from { 
+    transform: translate(-50%, -50%) scale(0.7); 
+    opacity: 0;
+  }
+  to { 
+    transform: translate(-50%, -50%) scale(1); 
+    opacity: 1;
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%;
+    max-height: 85vh;
+  }
+  
+  .modal-arrow {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+  
+  .modal-arrow.prev {
+    left: 10px;
+  }
+  
+  .modal-arrow.next {
+    right: 10px;
+  }
+  
+  .close-modal {
+    top: 15px;
+    right: 15px;
+    font-size: 32px;
+    width: 45px;
+    height: 45px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    width: 98%;
+    max-height: 80vh;
+  }
+}
+
+
+
+/* Image Slider & Gallery */
+
+.image-scroll-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;   /* 🔥 */
+    padding: 10px 0;
+}
+
+.image-card {
+    min-width: 320px;
+    height: 240px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 12px;
+    cursor: pointer;
+    position: relative;
+    scroll-snap-align: start;   /* 🔥 */
+}
+
+/* ===== Arrow Buttons ===== */
+/* ===== Arrow Buttons ===== */
+.gallery-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+
+    font-size: 28px;
+    width: 50px;
+    height: 50px;
+
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 20;
+    transition: 0.3s ease;
+}
+
+/* Push arrows slightly inside */
+.gallery-arrow.left {
+    left: 15px;
+}
+
+.gallery-arrow.right {
+    right: 15px;
+}
+
+.gallery-arrow:hover {
+    background: black;
+}
+
+/* .gallery-arrow.left {
+    left: 0;
+}
+
+.gallery-arrow.right {
+    right: 0;
+} */
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .image-card {
+        min-width: 260px;
+        height: 200px;
+    }
+}
+  /* ============================================ */
 .image-placeholder {
     background: linear-gradient(135deg, var(--gray-light) 0%, #f5f5f5 100%);
     display: flex;
@@ -393,10 +754,14 @@ section {
     100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
 }
 
-.philosophy-image,
-.about-image {
-    height: 500px;
-    width: 100%;
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+.img-fluid-projects {
+    max-height: 100%;
+    width: auto;
 }
 
 .project-image {
@@ -771,105 +1136,137 @@ section {
 }
 
 .filter-btn {
-    background: none;
-    border: 1px solid var(--gray-light);
-    color: var(--black);
-    padding: 0.8rem 2rem;
-    margin: 0 0.5rem 0.5rem;
-    font-weight: 300;
-    letter-spacing: 0.1em;
-    font-size: 0.9rem;
-    transition: var(--transition);
-    cursor: pointer;
+  border: none;
+  background-color: #efefef;
+  color: #000;
+  border-radius: 40px;
+  padding: 0.7rem 1.8rem;
+  margin: 0.3rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  transition: all 0.3s ease;
 }
 
 .filter-btn:hover,
 .filter-btn.active {
-    background-color: var(--black);
-    color: var(--white);
-    border-color: var(--black);
+  background-color: #000;
+  color: #fff;
 }
 
 /* ============================================
    PORTFOLIO PAGE - GRID
    ============================================ */
+/* ============================================
+   PORTFOLIO PAGE - REFINED GRID DESIGN
+   ============================================= */
+
 .portfolio-grid {
-    background-color: #fafafa;
+  background-color: #fdfdfd;
+  padding: 4rem 0;
 }
 
 .portfolio-item {
-    transition: var(--transition);
-}
-
-.portfolio-item.hidden {
-    display: none;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  display: flex;
+  align-items: stretch;
 }
 
 .portfolio-card {
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.06);
+  transition: all 0.4s ease;
 }
 
+.portfolio-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.10);
+}
+
+.portfolio-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3; /* NEW: keeps all consistent */
+  overflow: hidden;
+}
+
+.portfolio-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s ease;
+}
+
+.portfolio-card:hover .portfolio-image img {
+  transform: scale(1.08);
+}
+
+/* Sleek overlay */
 .portfolio-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.85);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: var(--transition);
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.8) 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .portfolio-card:hover .portfolio-overlay {
-    opacity: 1;
+  opacity: 1;
 }
 
-.portfolio-card:hover .portfolio-image {
-    transform: scale(1.1);
-}
-
+/* Text inside overlay */
 .portfolio-content {
-    text-align: center;
-    color: var(--white);
-    padding: 2rem;
+  text-align: center;
+  color: #fff;
+  padding: 2rem;
 }
 
 .portfolio-content h3 {
-    font-size: 1.8rem;
-    font-weight: 300;
-    letter-spacing: 0.05em;
-    margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
 }
 
 .portfolio-content p {
-    font-size: 0.9rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-    opacity: 0.8;
+  font-size: 0.85rem;
+  opacity: 0.85;
+  letter-spacing: 0.1em;
+  margin: 0.5rem 0 1rem;
 }
 
 .view-btn {
-    background: none;
-    border: 1px solid var(--white);
-    color: var(--white);
-    padding: 0.8rem 2rem;
-    font-weight: 300;
-    letter-spacing: 0.1em;
-    font-size: 0.9rem;
-    transition: var(--transition);
-    cursor: pointer;
+  background: none;
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 0.6rem 1.5rem;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .view-btn:hover {
-    background-color: var(--white);
-    color: var(--black);
+  background: #fff;
+  color: #000;
 }
+
+/* Subtle grid spacing improvement */
+.row.g-4 > [class*='col'] {
+  display: flex;
+}
+
+/* Responsive Improvements */
+@media (max-width: 768px) {
+  .portfolio-image {
+    aspect-ratio: 16 / 9;
+  }
+}
+
 
 /* ============================================
    PROJECT DETAIL SECTION
@@ -916,7 +1313,7 @@ section {
 }
 
 .detail-image {
-    height: 500px;
+    height: 300px;
     width: 100%;
 }
 
@@ -964,7 +1361,7 @@ section {
    MODAL
    ============================================ */
 .modal-content {
-    background-color: var(--black);
+    background-color: #ffffff00;
     color: var(--white);
     border: none;
 }
@@ -1221,7 +1618,7 @@ section {
    AOS (Animate On Scroll) FALLBACK
    ============================================ */
 [data-aos] {
-    opacity: 0;
+    opacity: 100;
     transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
@@ -1362,4 +1759,201 @@ section {
 .py-5 {
     padding-top: 4rem;
     padding-bottom: 4rem;
+}
+
+/* ===============================================NEW FONT CODE=========================================== */
+
+/* ============================================
+   LUXURY TYPOGRAPHY SYSTEM - Lato + Playfair
+   ============================================ */
+
+/* BASE FONT SIZES */
+html {
+    font-size: 16px; /* Base for luxury proportions */
+}
+
+body {
+    font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    color: #333;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+    overflow-x: hidden;
+    background-color: #f9f9f9;
+
+}
+
+h1.hero-title.aos-animate {
+    color: #ffffffe8;
+    text-shadow: 0 0 12px #000000;
+}
+
+p.hero-subtitle.aos-animate {
+    font-family: 'Lato';
+    font-weight: bolder;
+    color: black;
+    text-shadow: 0 0 2px #ffffff;
+}
+
+/* H1 - LOGO & HERO (Playfair Bold Italic) */
+h1, .logo-text, .hero-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+}
+
+/* H2 - MAIN SECTION TITLES (Playfair Bold) */
+h2, .section-title, .detail-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+h2::after, .section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+/* H3 - SUBHEADINGS & CARDS (Lato Bold) */
+h3, .portfolio-item h3, .card-title {
+  font-family: 'Lato', sans-serif;
+  font-weight: 900; /* Extra Bold */
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+/* H4 - FEATURE TITLES (Playfair Medium Italic) */
+h4, .gallery-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 500;
+  font-style: italic;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+}
+
+/* BODY TEXT (Lato Regular) */
+p, .detail-description, .lead-text {
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  color: #555;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+/* BUTTONS (Lato Bold Uppercase) */
+.btn-custom, .filter-btn, .back-btn, .gallery-arrow, .modal-arrow, .close-modal {
+  font-family: 'Lato', sans-serif;
+  font-weight: 900;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* NAVIGATION (Lato Bold) */
+.navbar .nav-link {
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+/* DETAIL INFO (Lato Bold) */
+.detail-info-item strong {
+  font-family: 'Lato', sans-serif;
+  font-weight: 900;
+  color: #1a1a1a;
+}
+
+.detail-info-item span {
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+  color: #666;
+}
+
+/* STATS COUNTERS (Lato Extra Bold) */
+.stat-number {
+  font-family: 'Lato', sans-serif;
+  font-weight: 900;
+  font-size: 3.5rem;
+  line-height: 1;
+}
+
+/* MODAL ELEMENTS */
+.close-modal {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 2rem;
+}
+
+/* RESPONSIVE TYPOGRAPHY */
+@media (max-width: 768px) {
+  h1, .hero-title { font-size: clamp(2.5rem, 7vw, 4rem); }
+  h2, .section-title { font-size: clamp(2rem, 5vw, 2.8rem); }
+  h3 { font-size: 1.6rem; }
+  p, .detail-description { font-size: 1rem; line-height: 1.7; }
+  
+  .navbar .nav-link {
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+}
+
+@media (max-width: 480px) {
+  h1, .hero-title { font-size: clamp(2rem, 8vw, 3rem); }
+  h2 { font-size: clamp(1.8rem, 6vw, 2.4rem); }
+  .stat-number { font-size: 2.8rem; }
+}
+
+/* UTILITY CLASSES */
+.text-serif {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.text-bold {
+  font-family: 'Lato', sans-serif;
+  font-weight: 900;
+}
+
+.text-italic {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+}
+
+.luxury-lead {
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 1.4rem;
+  line-height: 1.5;
+}
+
+.logo {
+    width: 40px;
+    height: auto;
 }
